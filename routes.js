@@ -8,7 +8,7 @@ const apiPetsController = require('./controller/apiPetsController.js');
 router.get('/users', apiUsersController.findAll);
 router.post('/users', apiUsersController.createUser);
 router.get('/pets', apiPetsController.findAll);
-router.post('/pets', apiPetsController.createPet);
+router.post('/pets', apiPetsController.create);
 
 
 module.exports = router;

@@ -7,22 +7,24 @@ module.exports = {
 
             const idLogin = req.query.idLogin;
 
-            if (!idLogin) {
-                return res.status(400).json({ error: 'idLogin é necessário.' });
-            }
+            let pets;
 
-            let pets = await petService.findAll(idLogin);
+            if (!idLogin) {
+                pets = await petService.findAll();
+            } else { 
+                 pets = await petService.find(idLogin);
+            }
 
             for (let pet in pets) {
                 json.pets.push({
                     idLogin: pets[pet].idLogin,
-                    name: pets[pet].nome,
-                    breed: pets[pet].raca,
-                    size: pets[pet].porte,
-                    color: pets[pet].cor,
-                    Sex: pets[pet].sexo,
-                    Birth: pets[pet].nascimento,
-                    Death: pets[pet].falecimento
+                    name: pets[pet].name,
+                    breed: pets[pet].breed,
+                    size: pets[pet].size,
+                    color: pets[pet].color,
+                    sex: pets[pet].sex,
+                    birth: pets[pet].birth,
+                    death: pets[pet].death
                 });
             }
             res.json(json);
@@ -32,7 +34,7 @@ module.exports = {
         }
     }, 
 
-    createPet: async (req, res) => {
+    create: async (req, res) => {
         try {
             const {idLogin, name, breed, size, color, sex, birth, death} = req.body;
 
@@ -40,7 +42,7 @@ module.exports = {
                 return res.status(400).json({ error: 'Nao foram fornecidos todos os campos.' });
             }
 
-            const newPet = await petService.createPet(idLogin, name, breed, size, color, sex, birth, death);
+            const newPet = await petService.create(idLogin, name, breed, size, color, sex, birth, death);
 
             res.status(201).json(newPet);
         } catch (error) {

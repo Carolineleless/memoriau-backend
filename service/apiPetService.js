@@ -2,9 +2,9 @@ const { findAll } = require('../controller/apiPetsController');
 const db = require('../db');
 
 module.exports = {
-    findAll: (idLogin) => {
+    findAll: () => {
         return new Promise((resolve, reject) => {
-            db.query('SELECT * FROM animal WHERE idLogin = ?', [idLogin], (error, results) => {
+            db.query('SELECT * FROM animal', (error, results) => {
                 if (error) {
                     reject(error);
                     return;
@@ -14,10 +14,10 @@ module.exports = {
         });
     }, 
 
-    createPet: (idLogin, name, breed, size, color, sex, birth, death) => {
+    create: (idLogin, name, breed, size, color, sex, birth, death) => {
         return new Promise((resolve, reject) => {
     
-            const sql = 'INSERT INTO animal (idLogin, nome, raça, porte, cor, sexo, nascimento, falecimento) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+            const sql = 'INSERT INTO animal (idLogin, name, breed, size, color, sex, birth, death) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
             
             db.query(sql, [idLogin, name, breed, size, color, sex, birth, death], (error, result) => {
                 if (error) {
@@ -32,5 +32,17 @@ module.exports = {
                 resolve(newPet);
             });
         });
-    }    
+    },
+    
+    find: (idLogin) => {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM animal WHERE idLogin = ?', [idLogin], (error, results) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve(results);
+            });
+        });
+    }, 
 };
